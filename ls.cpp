@@ -41,34 +41,24 @@ void dirwalk(const std::string & dir, std::vector<std::string> & arr)
     std::cout << dir << '\n';
     DirectoryIterator it(dir);
     DirectoryIterator end;
-    while (it != end)
-    {
-        
+    while (it != end) {
         if (!it->isFile()) { 
             arr.push_back(dir + "/" + it.name());
             Text_Mode blue(BLUE_BOLD);
             std::cout << it.name();
-            //std::cout << "   " + BLUE_BOLD << it.name()  << NORM_MODE << ' ';
-        }    
-        else {
-        
+        } else {       
             if (it.name().find(".txt") != std::string::npos) {
                 Text_Mode red(RED_BOLD);
                 std::cout << it.name();
-                //std::cout  << it.name();
-            }    
-            else if (it.name().find('.') != std::string::npos) {
+            } else if (it.name().find('.') != std::string::npos) {
                 std::cout << "   " << it.name() << " ";
-            }
-            else {
+            } else {
                 Text_Mode green(GREEN_BOLD);
                 std::cout << it.name();
-                //std::cout << it.name();
             }    
             std::cout << it->getSize();
         }    
-        std::cout << std::endl;
-        
+        std::cout << std::endl;       
         ++it;
     }
 
@@ -82,32 +72,27 @@ void fsize(const std::string & dir)
     std::cout  << std::endl;
     if (file.isDirectory()) {        
         dirwalk(dir, arr);
-    }    
-    else {        
+    } else {        
         std::cout << p.getFileName() << " " << file.getSize() << std::endl;
     }    
     if (arr.empty()) {
         return;
-    }    
-      
-    else {
+    } else {
         for (int i = 0; i < arr.size(); i++) {
             File f(arr[i]);            
             if (f.isDirectory())
                 fsize(arr[i]);
-        }        
-            
-                    
-    }    
-        
-            
+        }                    
+    }              
 }
 
 int main(int argc, char** argv)
 {
-    std::string cwd("..");
+    if (argc < 2) {
+        std::cerr << "usage: " << argv[0] << " file_name" << '\n'; 
+        return -1;
+    }    
+    std::string cwd(argv[1]);
     fsize(cwd);
-    //Path p("/usr/6");
-    //std::cout << p.isDirectory() ;
     return 0;
 }
